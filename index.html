@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta http-equiv="X-UA-Compatible" content="IE=edge">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+ <title>Expense Tracker</title>
+ 
+</head>
+<body>
+ <h1>Expense Tracker</h1>
+ <form id="addform" onsubmit="saveToLocalStorage(event)">
+  <label for="amount">Choose expense amount:</label>
+  <input type="number" name="amount" id="amount" placeholder="Enter the amount" required ><br><br>
+
+  <label for="description">Choose Description:</label>
+  <input type="text" name="description" id="description" placeholder="Description" required><br><br>
+
+  <label for="category">Choose a Category:</label>
+  <select name="category" id="category">
+   <option value="movie">Movie</option>
+   <option value="dinner">Dinner</option>
+   <option value="playstation">Playstation</option>
+   <option value="ticket">Ticket</option>
+   <option value="fuel">Fuel</option>
+  </select><br><br>
+
+  <input type="submit" id="submit" value="Add Expenses">
+  <ul id="users"></ul>
+ </form>
+ <script>
+  function saveToLocalStorage(event){
+   event.preventDefault();
+   const amount = event.target.amount.value;
+   const description = event.target.description.value;
+   const category = event.target.category.value;
+   const obj ={
+    amount,
+    description,
+    category
+   }
+   localStorage.setItem(obj.category, JSON.stringify(obj));
+   showOnScreen(obj);
+
+  }
+  function showOnScreen(obj){
+   const parentElem = document.getElementById('users');
+   const childElem = document.createElement('li');
+   childElem.textContent = obj.amount + ' - ' + obj.description + ' - ' + obj.category;
+   parentElem.appendChild(childElem);
+
+   const deleteButton = document.createElement('input');
+  deleteButton.type = "button";
+  deleteButton.value = "Delete";
+  deleteButton.onclick = () => {
+    localStorage.removeItem(obj.category);
+    parentElem.removeChild(childElem);
+  }
+  childElem.appendChild(deleteButton);
+  parentElem.appendChild(childElem);
+ }
+  
+ </script>
+</body>
+</html>
